@@ -17,7 +17,9 @@ function PreLoader() {
       display="flex"
       justifyContent="center"
       alignItems="center"
+      flexDirection="column"
     >
+      <h1>Loading...</h1>
       <CircularProgress />
     </Box>
   );
