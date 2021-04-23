@@ -5,11 +5,6 @@ const useStyles = makeStyles({
   root: {
     minWidth: 275,
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
   title: {
     fontSize: 14,
   },
@@ -18,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-function WeatherCard() {
+function WeatherCard({ day }) {
   const classes = useStyles();
   return (
     <Card className={classes.root} variant="outlined">
@@ -31,13 +26,13 @@ function WeatherCard() {
           Temp:
         </Typography>
         <Typography variant="h5" component="h2">
-          23F
+          23 F
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
           Date:
         </Typography>
         <Typography variant="body2" component="p">
-          12 Nov 17
+          {day}
         </Typography>
       </CardContent>
     </Card>

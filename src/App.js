@@ -19,9 +19,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Box pt={5}>
-      {queryStatus === "loading" ? <PreLoader /> : <WeatherInfo />}
-    </Box>
+    <Box>{queryStatus === "loading" ? <PreLoader /> : <WeatherInfo />}</Box>
   );
 }
 
