@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-
 import { useSelector } from "react-redux";
-import { selectProcessedData } from "../features/weather/weatherSlice";
+import {
+  selectProcessedData,
+  selectWeatherLocation,
+} from "../features/weather/weatherSlice";
+import { paginator } from "../utils";
 
 import {
   Container,
@@ -11,6 +14,9 @@ import {
   FormControlLabel,
   IconButton,
   makeStyles,
+  CssBaseline,
+  Box,
+  Typography,
 } from "@material-ui/core";
 import { ArrowBack, ArrowForward } from "@material-ui/icons";
 
@@ -25,101 +31,102 @@ const useStyles = makeStyles({
 
 function WeatherInfo() {
   const classes = useStyles();
-  const [temperatureUnit, setTemperatureUnit] = useState("fahrenheit");
 
+  const locationData = useSelector(selectWeatherLocation);
   const processedData = useSelector(selectProcessedData);
+  const days = Object.keys(processedData);
 
-  const paginator = (items, current_page, per_page_items) => {
-    let page = current_page || 1,
-      per_page = per_page_items || 10,
-      offset = (page - 1) * per_page,
-      paginatedItems = items.slice(offset).slice(0, per_page_items),
-      total_pages = Math.ceil(items.length / per_page);
-
-    return {
-      page: page,
-      per_page: per_page,
-      pre_page: page - 1 ? page - 1 : null,
-      next_page: total_pages > page ? page + 1 : null,
-      total: items.length,
-      total_pages: total_pages,
-      data: paginatedItems,
-    };
-  };
-
+  const [temperatureUnit, setTemperatureUnit] = useState("F");
   const [currentPage, setCurrentPage] = useState(1);
-  const [paginatedData] = useState(
-    paginator(Object.keys(processedData), currentPage, 3)
+  const [paginatedData, setPaginatedData] = useState(
+    paginator(days, currentPage, 3)
   );
+  // Select the first day by default
+  const [selectedDay, setSelectedDay] = useState(days[0]);
 
+  // Controls for paginating Cards
   let canMovePrevious = currentPage > 1;
-  let canMoveNext = currentPage < paginatedData.total;
+  let canMoveNext = paginatedData.next_page ? true : false;
 
   const moveToPreviousCard = () => {
     if (canMovePrevious) {
+      setPaginatedData(paginator(days, currentPage - 1, 3));
       setCurrentPage(currentPage - 1);
     }
   };
 
   const moveToNextCard = () => {
     if (canMoveNext) {
+      setPaginatedData(paginator(days, currentPage + 1, 3));
       setCurrentPage(currentPage + 1);
     }
   };
 
-  /**
-   * TODO LIST
-   * Selecting a Default Card and passing corresponding data to the WeatherChart
-   *
-   */
-
   return (
-    <Container>
-      <Grid>
-        <RadioGroup
-          row
-          aria-label="temperatureUnit"
-          name="tempUnit"
-          value={temperatureUnit}
-          onChange={(event) => setTemperatureUnit(event.target.value)}
-        >
-          <FormControlLabel
-            value="celcius"
-            control={<Radio />}
-            label="Celcius"
-          />
-          <FormControlLabel
-            value="fahrenheit"
-            control={<Radio />}
-            label="Fahrenheit"
-          />
-        </RadioGroup>
-      </Grid>
-      <Grid container>
-        <Grid item xs={6}>
-          {canMovePrevious && (
-            <IconButton aria-label="previous" onClick={moveToPreviousCard}>
-              <ArrowBack fontSize="large" />
-            </IconButton>
-          )}
-        </Grid>
-        <Grid item xs={6} className={classes.next}>
-          {canMoveNext && (
-            <IconButton aria-label="next" onClick={moveToNextCard}>
-              <ArrowForward fontSize="large" />
-            </IconButton>
-          )}
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        {paginatedData.data.map((day) => (
-          <Grid item xs={4} key={day}>
-            <WeatherCard day={day} />
+    <>
+      <CssBaseline />
+      <Container>
+        <Box mt={2}>
+          <Typography variant="h4" component="h1" align="center">
+            The Weather Condition in {locationData.name}
+          </Typography>
+        </Box>
+        <Box mt={1}>
+          <RadioGroup
+            row
+            aria-label="temperatureUnit"
+            name="tempUnit"
+            value={temperatureUnit}
+            onChange={(event) => setTemperatureUnit(event.target.value)}
+          >
+            <FormControlLabel value="C" control={<Radio />} label="Celcius" />
+            <FormControlLabel
+              value="F"
+              control={<Radio />}
+              label="Fahrenheit"
+            />
+          </RadioGroup>
+        </Box>
+        <Grid container>
+          <Grid item xs={6}>
+            {canMovePrevious && (
+              <IconButton aria-label="previous" onClick={moveToPreviousCard}>
+                <ArrowBack fontSize="large" />
+              </IconButton>
+            )}
           </Grid>
-        ))}
-      </Grid>
-      <WeatherChart />
-    </Container>
+          <Grid item xs={6} className={classes.next}>
+            {canMoveNext && (
+              <IconButton aria-label="next" onClick={moveToNextCard}>
+                <ArrowForward fontSize="large" />
+              </IconButton>
+            )}
+          </Grid>
+        </Grid>
+        <Box mb={4}>
+          <Grid container spacing={2}>
+            {paginatedData.data.map((day) => (
+              <Grid item xs={4} key={day}>
+                <WeatherCard
+                  day={day}
+                  temperatureUnit={temperatureUnit}
+                  dayWeatherData={processedData[day]}
+                  isSelected={day === selectedDay}
+                  handleCardClick={setSelectedDay}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {selectedDay && (
+          <WeatherChart
+            day={selectedDay}
+            temperatureUnit={temperatureUnit}
+            dayWeatherData={processedData[selectedDay]}
+          />
+        )}
+      </Container>
+    </>
   );
 }
 
