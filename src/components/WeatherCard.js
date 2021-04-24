@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, makeStyles } from "@material-ui/core";
-import { getAverageTemperature, formatWeatherDay } from "../utils";
+import { computeAverageTemperature, formatWeatherDay } from "../utils";
 
 const useStyles = makeStyles({
   root: {
@@ -21,10 +21,10 @@ function WeatherCard({
   handleCardClick,
 }) {
   const classes = useStyles(isSelected);
+  const degreeSymbol = <sup>°</sup>;
 
-  const averageTemperature = getAverageTemperature(
+  const averageTemperature = computeAverageTemperature(
     dayWeatherData,
-    "temp",
     temperatureUnit
   );
 
@@ -41,7 +41,9 @@ function WeatherCard({
           Temp:
         </Typography>
         <Typography variant="h5" component="h2">
-          {`${averageTemperature} ${temperatureUnit}`}
+          {averageTemperature}
+          {degreeSymbol}
+          {temperatureUnit}
         </Typography>
         <Typography color="textSecondary">Date:</Typography>
         <Typography variant="h5" component="h2">

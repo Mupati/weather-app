@@ -79,7 +79,7 @@ function WeatherInfo() {
             value={temperatureUnit}
             onChange={(event) => setTemperatureUnit(event.target.value)}
           >
-            <FormControlLabel value="C" control={<Radio />} label="Celcius" />
+            <FormControlLabel value="C" control={<Radio />} label="Celsius" />
             <FormControlLabel
               value="F"
               control={<Radio />}

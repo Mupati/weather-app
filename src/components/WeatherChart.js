@@ -1,17 +1,23 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
-import { formatWeatherDay } from "../utils";
+import {
+  formatWeatherDay,
+  formatWeatherTime,
+  getCelsiusTemperature,
+} from "../utils";
 
 function WeatherChart({ day, dayWeatherData, temperatureUnit }) {
   let graphData = {
-    labels: dayWeatherData.map((data) => data.dt_txt.split(" ")[1]),
+    labels: dayWeatherData.map((data) => formatWeatherTime(data.dt_txt)),
     datasets: [
       {
         label: `Temperatures on ${formatWeatherDay(day)}`,
         data:
           temperatureUnit === "F"
-            ? dayWeatherData.map((data) => data.main.temp_kf)
-            : dayWeatherData.map((data) => data.main.temp),
+            ? dayWeatherData.map((data) => data.main.temp)
+            : dayWeatherData.map((data) =>
+                getCelsiusTemperature(data.main.temp)
+              ),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,

@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 /*
 Given the data we have received, we'll group into chunks and use that
@@ -61,6 +61,37 @@ export const paginator = (items, current_page, per_page_items) => {
 
 /**
  *
+ * @param {*} date
+ * @returns
+ */
+export const formatWeatherDay = (date) => format(new Date(date), "dd LLL yy");
+
+/**
+ *
+ * @param {*} dateTime
+ * @returns
+ */
+export const formatWeatherTime = (dateTime) =>
+  format(parseISO(dateTime), "hh:mm a");
+
+/**
+ *
+ * @param {*} fahrenheitTemp
+ * @returns
+ */
+export const getCelsiusTemperature = (fahrenheitTemp) =>
+  (5 / 9) * (fahrenheitTemp - 32);
+
+/**
+ *
+ * @param {*} kelvinTemp
+ * @returns
+ */
+export const getFahrenheitTemperature = (kelvinTemp) =>
+  1.8 * (kelvinTemp - 273) + 32;
+
+/**
+ *
  * @param {*} weatherData
  * @param {*} metric
  * @param {*} temperatureUnit
@@ -68,29 +99,11 @@ export const paginator = (items, current_page, per_page_items) => {
  */
 
 // Get the average value for a weather metric for a particular day
-export const getAverageTemperature = (
-  weatherData,
-  metric,
-  temperatureUnit = "F"
-) => {
-  let metricKey;
-  if (metric === "temp") {
-    metricKey = temperatureUnit === "F" ? "temp_kf" : "temp";
-  } else {
-    metricKey = metric;
+export const computeAverageTemperature = (weatherData, temperatureUnit) => {
+  const total = weatherData.reduce((acc, curr) => acc + curr.main["temp"], 0);
+  const averageTemp = total / weatherData.length;
+  if (temperatureUnit === "C") {
+    return getCelsiusTemperature(averageTemp).toFixed(2);
   }
-
-  let total = weatherData.reduce((acc, curr) => acc + curr.main[metricKey], 0);
-  return (total / weatherData.length).toFixed(1);
-};
-
-// format Date
-/**
- *
- * @param {*} date
- * @returns
- */
-export const formatWeatherDay = (date) => {
-  let sanitizedDate = date.replace("-", ",");
-  return format(new Date(sanitizedDate), "dd LLL yy");
+  return averageTemp.toFixed(2);
 };

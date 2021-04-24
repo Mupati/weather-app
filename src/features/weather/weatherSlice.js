@@ -3,7 +3,7 @@ import { fetchWeatherData } from "./weatherAPI";
 import { groupByDtTxt } from "../../utils";
 
 const initialState = {
-  value: null,
+  weatherInfo: null,
   status: "loading",
 };
 
@@ -19,11 +19,7 @@ export const getWeatherData = createAsyncThunk(
 export const weatherSlice = createSlice({
   name: "weather",
   initialState,
-  reducers: {
-    weatherDataByUnit: (state, action) => {
-      state.value = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builders) => {
     builders
       .addCase(getWeatherData.pending, (state) => {
@@ -31,7 +27,7 @@ export const weatherSlice = createSlice({
       })
       .addCase(getWeatherData.fulfilled, (state, action) => {
         state.status = "idle";
-        state.value = action.payload;
+        state.weatherInfo = action.payload;
       })
       .addCase(getWeatherData.rejected, (state) => {
         state.status = "rejected";
@@ -40,11 +36,10 @@ export const weatherSlice = createSlice({
 });
 
 // Selectors
-export const selectWeatherData = (state) => state.weather.value;
+export const selectWeatherData = (state) => state.weather.weatherInfo;
 export const selectQueryStatus = (state) => state.weather.status;
 export const selectProcessedData = (state) =>
-  groupByDtTxt(state.weather.value?.list);
-export const selectWeatherLocation = (state) => state.weather.value.city;
+  groupByDtTxt(state.weather.weatherInfo?.list);
+export const selectWeatherLocation = (state) => state.weather.weatherInfo?.city;
 
-export const { weatherDataByUnit } = weatherSlice.actions;
 export default weatherSlice.reducer;
