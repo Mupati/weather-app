@@ -41,7 +41,7 @@ function WeatherCard({
           Temp:
         </Typography>
         <Typography variant="h5" component="h2">
-          {averageTemperature}
+          {averageTemperature.toFixed(2)}
           {degreeSymbol}
           {temperatureUnit}
         </Typography>

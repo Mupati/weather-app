@@ -71,7 +71,7 @@ function WeatherInfo() {
             The Weather Condition in {locationData.name}
           </Typography>
         </Box>
-        <Box mt={1}>
+        <Box mt={1} display="flex" justifyContent="center" alignItems="center">
           <RadioGroup
             row
             aria-label="temperatureUnit"
@@ -79,10 +79,14 @@ function WeatherInfo() {
             value={temperatureUnit}
             onChange={(event) => setTemperatureUnit(event.target.value)}
           >
-            <FormControlLabel value="C" control={<Radio />} label="Celsius" />
+            <FormControlLabel
+              value="C"
+              control={<Radio color="primary" />}
+              label="Celsius"
+            />
             <FormControlLabel
               value="F"
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="Fahrenheit"
             />
           </RadioGroup>
