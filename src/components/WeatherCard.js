@@ -5,6 +5,11 @@ import { getAverageTemperature, formatWeatherDay } from "../utils";
 const useStyles = makeStyles({
   root: {
     cursor: "pointer",
+    backgroundColor: (isSelected) =>
+      isSelected ? "rgba(54, 162, 235, 0.2)" : "",
+    "&:hover": {
+      borderColor: "rgba(54, 162, 235, 1)",
+    },
   },
 });
 
@@ -15,7 +20,7 @@ function WeatherCard({
   isSelected,
   handleCardClick,
 }) {
-  const classes = useStyles();
+  const classes = useStyles(isSelected);
 
   const averageTemperature = getAverageTemperature(
     dayWeatherData,
@@ -25,7 +30,9 @@ function WeatherCard({
 
   return (
     <Card
-      className={classes.root}
+      classes={{
+        root: classes.root,
+      }}
       variant={isSelected ? "elevation" : "outlined"}
       onClick={() => handleCardClick(day)}
     >
