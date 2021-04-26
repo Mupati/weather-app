@@ -67,10 +67,11 @@ export const {
   increaseCurrentPage,
   decreaseCurrentPage,
   setSelectedDay,
+  setPageSize,
 } = weatherSlice.actions;
 
 // Selectors
-// PaginatedDays
+// Paginate the days
 export const selectPaginatedDays = (state) =>
   paginator(
     Object.keys(state.weather.data.imperial),
