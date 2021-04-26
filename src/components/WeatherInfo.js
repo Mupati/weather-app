@@ -6,32 +6,14 @@ import {
 } from "../features/weather/weatherSlice";
 import { paginator } from "../utils";
 
-import {
-  Container,
-  Grid,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  IconButton,
-  makeStyles,
-  CssBaseline,
-  Box,
-  Typography,
-} from "@material-ui/core";
-import { ArrowBack, ArrowForward } from "@material-ui/icons";
+import { Container, Grid, Box, Typography } from "@material-ui/core";
 
 import WeatherCard from "./WeatherCard";
 import WeatherChart from "./WeatherChart";
-
-const useStyles = makeStyles({
-  next: {
-    textAlign: "right",
-  },
-});
+import CardNavigator from "./CardNavigator";
+import CheckboxGroup from "./CheckboxGroup";
 
 function WeatherInfo() {
-  const classes = useStyles();
-
   const locationData = useSelector(selectWeatherLocation);
   const processedData = useSelector(selectProcessedData);
   const days = Object.keys(processedData);
@@ -64,49 +46,21 @@ function WeatherInfo() {
 
   return (
     <>
-      <CssBaseline />
       <Container>
         <Box mt={2}>
           <Typography variant="h4" component="h1" align="center">
             The Weather Condition in {locationData.name}
           </Typography>
         </Box>
-        <Box mt={1} display="flex" justifyContent="center" alignItems="center">
-          <RadioGroup
-            row
-            aria-label="temperatureUnit"
-            name="tempUnit"
-            value={temperatureUnit}
-            onChange={(event) => setTemperatureUnit(event.target.value)}
-          >
-            <FormControlLabel
-              value="C"
-              control={<Radio color="primary" />}
-              label="Celsius"
-            />
-            <FormControlLabel
-              value="F"
-              control={<Radio color="primary" />}
-              label="Fahrenheit"
-            />
-          </RadioGroup>
-        </Box>
-        <Grid container>
-          <Grid item xs={6}>
-            {canMovePrevious && (
-              <IconButton aria-label="previous" onClick={moveToPreviousCard}>
-                <ArrowBack fontSize="large" />
-              </IconButton>
-            )}
-          </Grid>
-          <Grid item xs={6} className={classes.next}>
-            {canMoveNext && (
-              <IconButton aria-label="next" onClick={moveToNextCard}>
-                <ArrowForward fontSize="large" />
-              </IconButton>
-            )}
-          </Grid>
-        </Grid>
+
+        <CheckboxGroup setUnit={setTemperatureUnit} unit={temperatureUnit} />
+        <CardNavigator
+          canMoveNext={canMoveNext}
+          canMovePrevious={canMovePrevious}
+          moveToNextCard={moveToNextCard}
+          moveToPreviousCard={moveToPreviousCard}
+        />
+
         <Box mb={4}>
           <Grid container spacing={2}>
             {paginatedData.data.map((day) => (
