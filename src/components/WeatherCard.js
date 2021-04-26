@@ -1,56 +1,78 @@
 import React from "react";
-import { Card, CardContent, Typography, makeStyles } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Box,
+  Grid,
+  Card,
+  makeStyles,
+  CardContent,
+  Typography,
+} from "@material-ui/core";
 import { computeAverageTemperature, formatWeatherDay } from "../utils";
+
+import {
+  selectPaginatedDays,
+  selectWeatherData,
+  setSelectedDay,
+} from "../features/weather/weatherSlice";
 
 const useStyles = makeStyles({
   root: {
     cursor: "pointer",
-    backgroundColor: (isSelected) =>
-      isSelected ? "rgba(54, 162, 235, 0.2)" : "",
     "&:hover": {
       borderColor: "rgba(54, 162, 235, 1)",
     },
   },
+  rootHover: {
+    backgroundColor: "rgba(54, 162, 235, 0.2)",
+  },
 });
 
-function WeatherCard({
-  day,
-  temperatureUnit,
-  dayWeatherData,
-  isSelected,
-  handleCardClick,
-}) {
-  const classes = useStyles(isSelected);
+function WeatherCard() {
+  const temperatureUnit = useSelector((state) => state.weather.temperatureUnit);
+  const selectedDay = useSelector((state) => state.weather.selectedDay);
+  const weatherData = useSelector(selectWeatherData);
+  const paginatedDays = useSelector(selectPaginatedDays);
+
+  const dispatch = useDispatch();
+
+  const classes = useStyles(true);
   const degreeSymbol = <sup>°</sup>;
 
-  const averageTemperature = computeAverageTemperature(
-    dayWeatherData,
-    temperatureUnit
-  );
+  // const currentlySelectedCard = selectedDay ? days[0] :
 
   return (
-    <Card
-      classes={{
-        root: classes.root,
-      }}
-      variant={isSelected ? "elevation" : "outlined"}
-      onClick={() => handleCardClick(day)}
-    >
-      <CardContent>
-        <Typography color="textSecondary" gutterBottom>
-          Temp:
-        </Typography>
-        <Typography variant="h5" component="h2">
-          {averageTemperature.toFixed(2)}
-          {degreeSymbol}
-          {temperatureUnit}
-        </Typography>
-        <Typography color="textSecondary">Date:</Typography>
-        <Typography variant="h5" component="h2">
-          {formatWeatherDay(day)}
-        </Typography>
-      </CardContent>
-    </Card>
+    <Box mb={4}>
+      <Grid container spacing={2}>
+        {paginatedDays.data.map((day) => (
+          <Grid item xs={4} key={day}>
+            <Card
+              classes={{
+                root: classes.root,
+              }}
+              className={selectedDay === day ? classes.rootHover : ""}
+              variant={selectedDay === day ? "elevation" : "outlined"}
+              onClick={() => dispatch(setSelectedDay(day))}
+            >
+              <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                  Temp:
+                </Typography>
+                <Typography variant="h5" component="h2">
+                  {computeAverageTemperature(weatherData[day]).toFixed(2)}
+                  {degreeSymbol}
+                  {temperatureUnit}
+                </Typography>
+                <Typography color="textSecondary">Date:</Typography>
+                <Typography variant="h5" component="h2">
+                  {formatWeatherDay(day)}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 }
 

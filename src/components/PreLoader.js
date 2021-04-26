@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, CircularProgress, makeStyles } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
   root: {
@@ -12,6 +13,8 @@ const useStyles = makeStyles({
 function PreLoader() {
   const classes = useStyles();
 
+  const status = useSelector((state) => state.weather.status);
+
   return (
     <Box
       className={classes.root}
@@ -20,8 +23,14 @@ function PreLoader() {
       alignItems="center"
       flexDirection="column"
     >
-      <h1>Loading...</h1>
-      <CircularProgress />
+      {status === "loading" ? (
+        <>
+          <h1>Loading...</h1>
+          <CircularProgress />
+        </>
+      ) : (
+        <h1>An error occured while loading weather data. Please reload</h1>
+      )}
     </Box>
   );
 }

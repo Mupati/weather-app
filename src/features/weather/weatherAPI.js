@@ -12,12 +12,5 @@ values and use a function to convert to Celsius when we toggle.
 In this case we fetch the weatherInfo only once with temperature in Fahrenheit
 and compute the Celsius equivalents
 */
-export const fetchWeatherData = async () => {
-  try {
-    return await axios.get(
-      `${process.env.REACT_APP_WEATHER_API_URL}&units=imperial`
-    );
-  } catch (error) {
-    console.log(error.response);
-  }
-};
+export const fetchWeatherData = async (unit) =>
+  await axios.get(`${process.env.REACT_APP_WEATHER_API_URL}&units=${unit}`);

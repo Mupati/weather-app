@@ -38,19 +38,13 @@ export const groupByDtTxt = (weatherList) => {
  * @returns {object} - The paginated dataa and pagination properties
  */
 export const paginator = (items, current_page, pageSize) => {
-  let page = current_page || 1,
-    per_page = pageSize,
-    offset = (page - 1) * per_page,
-    paginatedItems = items.slice(offset).slice(0, pageSize),
-    total_pages = Math.ceil(items.length / per_page);
+  let page = current_page;
+  let paginatedItems = items.slice(page).slice(0, pageSize);
+  // total_pages = Math.ceil(items.length / per_page);
 
   return {
     page: page,
-    per_page: per_page,
-    pre_page: page - 1 ? page - 1 : null,
-    next_page: total_pages > page ? page + 1 : null,
-    total: items.length,
-    total_pages: total_pages,
+    next_page: items.length > page + pageSize ? page + 1 : null,
     data: paginatedItems,
   };
 };
@@ -92,11 +86,7 @@ export const getFahrenheitTemperature = (kelvinTemp) =>
  * @param {string} temperatureUnit - The unit for the computed temperature. "F" or "C"
  * @returns {number} - The average temperature
  */
-export const computeAverageTemperature = (weatherData, temperatureUnit) => {
+export const computeAverageTemperature = (weatherData) => {
   const total = weatherData.reduce((acc, curr) => acc + curr.main["temp"], 0);
-  const averageTemp = total / weatherData.length;
-  if (temperatureUnit === "C") {
-    return getCelsiusTemperature(averageTemp);
-  }
-  return averageTemp;
+  return total / weatherData.length;
 };

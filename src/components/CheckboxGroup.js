@@ -1,28 +1,41 @@
 import React from "react";
-import { Box, FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
+import { FormControlLabel, Checkbox, Grid } from "@material-ui/core";
+import { setTemperatureUnit } from "../features/weather/weatherSlice";
 
-function CheckboxGroup({ unit, setUnit }) {
+function CheckboxGroup() {
+  const temperatureUnit = useSelector((state) => state.weather.temperatureUnit);
+  const dispatch = useDispatch();
+
   return (
-    <Box mt={1} display="flex" justifyContent="center" alignItems="center">
-      <RadioGroup
-        row
-        aria-label="temperatureUnit"
-        name="tempUnit"
-        value={unit}
-        onChange={(event) => setUnit(event.target.value)}
-      >
+    <Grid container>
+      <Grid item xs={6}>
         <FormControlLabel
-          value="C"
-          control={<Radio color="primary" />}
+          control={
+            <Checkbox
+              checked={temperatureUnit === "C"}
+              color="primary"
+              onClick={() => dispatch(setTemperatureUnit("C"))}
+              name="celsius"
+            />
+          }
           label="Celsius"
         />
+      </Grid>
+      <Grid item xs={6}>
         <FormControlLabel
-          value="F"
-          control={<Radio color="primary" />}
+          control={
+            <Checkbox
+              checked={temperatureUnit === "F"}
+              color="primary"
+              onClick={() => dispatch(setTemperatureUnit("F"))}
+              name="fahrenheit"
+            />
+          }
           label="Fahrenheit"
         />
-      </RadioGroup>
-    </Box>
+      </Grid>
+    </Grid>
   );
 }
 
