@@ -23,7 +23,7 @@ function CardNavigator() {
   const paginatedDays = useSelector(selectPaginatedDays);
 
   let canMovePrevious = currentPage > 0;
-  let canMoveNext = paginatedDays.next_page ? true : false;
+  let canMoveNext = paginatedDays.nextPage ? true : false;
 
   const moveToPreviousCard = () => {
     if (canMovePrevious) {

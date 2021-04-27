@@ -33,26 +33,25 @@ export const groupByDtTxt = (weatherList) => {
 /**
  * Create paginated data for a given array
  * @param {array} items - The list of items.
- * @param {number} current_page - The currently view
+ * @param {number} currentPage - The currently view
  * @param {number} pageSize - The size of each page in the paginated data
  * @returns {object} - The paginated dataa and pagination properties
  */
-export const paginator = (items, current_page, pageSize) => {
-  let page = current_page;
+export const paginator = (items, currentPage, pageSize) => {
+  let page = currentPage;
   let paginatedItems = items.slice(page).slice(0, pageSize);
-  // total_pages = Math.ceil(items.length / per_page);
 
   return {
     page: page,
-    next_page: items.length > page + pageSize ? page + 1 : null,
+    nextPage: items.length > page + pageSize ? page + 1 : null,
     data: paginatedItems,
   };
 };
 
 /**
  * Get the formatted day
- * @param {string} date - A date value. Eg. 2021-04-25
- * @returns {string} - Date in the format 24 Apr 21for 24th April 2021
+ * @param {string} date - A date or datetime value. Eg. 2021-04-25 00:00:00
+ * @returns {string} - Date in the format 24 Apr 21 for 24th April 2021
  */
 export const formatWeatherDay = (date) => format(parseISO(date), "dd LLL yy");
 
@@ -65,25 +64,8 @@ export const formatWeatherTime = (dateTime) =>
   format(parseISO(dateTime), "hh:mm a");
 
 /**
- * Calculate the temperature in Celsius
- * @param {number} fahrenheitTemp - The temperature in Fahrenheit
- * @returns {number} - The temperature in Celsius
- */
-export const getCelsiusTemperature = (fahrenheitTemp) =>
-  (5 / 9) * (fahrenheitTemp - 32);
-
-/**
- * Calculate the temperature in Fahhrenheit
- * @param {number} kelvinTemp - The temperature in Kelvin
- * @returns {number} - The temperature in Fahrenheit
- */
-export const getFahrenheitTemperature = (kelvinTemp) =>
-  1.8 * (kelvinTemp - 273) + 32;
-
-/**
  * Calculate the average temperature for a day
  * @param {array} weatherData - The Weather information for a specific day.
- * @param {string} temperatureUnit - The unit for the computed temperature. "F" or "C"
  * @returns {number} - The average temperature
  */
 export const computeAverageTemperature = (weatherData) => {

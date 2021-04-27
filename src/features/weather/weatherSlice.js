@@ -5,7 +5,6 @@ import { groupByDtTxt, paginator } from "../../utils";
 const initialState = {
   data: { metric: {}, imperial: {} },
   status: "loading",
-  errorMessage: "",
   temperatureUnit: "F",
   currentPage: 0,
   pageSize: 3,
@@ -54,8 +53,10 @@ export const weatherSlice = createSlice({
         state.selectedDay = Object.keys(groupByDtTxt(action.payload.list))[0];
         state.status = "idle";
       })
-      .addCase(getWeatherData.rejected, (state, action) => {
-        state.errorMessage = action.payload.message;
+      .addCase(getWeatherData.rejected, (state) => {
+        // We can get the error message from action.error.message
+        // and display to the user but kind of error message is only relevant
+        // for technical users so we'll not set it in our state
         state.status = "rejected";
       });
   },

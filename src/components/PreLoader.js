@@ -13,7 +13,6 @@ const useStyles = makeStyles({
 function PreLoader() {
   const classes = useStyles();
   const status = useSelector((state) => state.weather.status);
-  const errorMessage = useSelector((state) => state.weather.errorMessage);
 
   return (
     <Box
@@ -29,7 +28,7 @@ function PreLoader() {
           <CircularProgress />
         </>
       ) : (
-        <h1>{errorMessage}</h1>
+        <h1>An error occured while loading weather data. Try again later...</h1>
       )}
     </Box>
   );
