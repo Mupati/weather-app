@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import PreLoader from "./components/PreLoader";
 import WeatherInfo from "./components/WeatherInfo";
@@ -16,9 +16,7 @@ function App() {
     dispatch(getWeatherData("metric"));
   }, [dispatch]);
 
-  return (
-    <Container>{status !== "idle" ? <PreLoader /> : <WeatherInfo />}</Container>
-  );
+  return <Box>{status !== "idle" ? <PreLoader /> : <WeatherInfo />}</Box>;
 }
 
 export default App;

@@ -6,9 +6,9 @@ import { selectWeatherData } from "../features/weather/weatherSlice";
 
 function WeatherChart() {
   const selectedDay = useSelector((state) => state.weather.selectedDay);
-  let dayWeatherData = useSelector(selectWeatherData);
+  const dayWeatherData = useSelector(selectWeatherData);
 
-  let graphData = {
+  const graphData = {
     labels: dayWeatherData[selectedDay].map((data) =>
       formatWeatherTime(data.dt_txt)
     ),

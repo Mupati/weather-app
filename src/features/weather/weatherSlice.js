@@ -5,6 +5,7 @@ import { groupByDtTxt, paginator } from "../../utils";
 const initialState = {
   data: { metric: {}, imperial: {} },
   status: "loading",
+  errorMessage: "",
   temperatureUnit: "F",
   currentPage: 0,
   pageSize: 3,
@@ -48,14 +49,13 @@ export const weatherSlice = createSlice({
       })
       .addCase(getWeatherData.fulfilled, (state, action) => {
         // action.meta.arg contains the argument that was passed in the async request
-        state.status = "idle";
         state.data[action.meta.arg] = groupByDtTxt(action.payload.list);
 
-        // set the selected day value only one.
-        // The condition is over here
         state.selectedDay = Object.keys(groupByDtTxt(action.payload.list))[0];
+        state.status = "idle";
       })
-      .addCase(getWeatherData.rejected, (state) => {
+      .addCase(getWeatherData.rejected, (state, action) => {
+        state.errorMessage = action.payload.message;
         state.status = "rejected";
       });
   },
@@ -70,7 +70,6 @@ export const {
   setPageSize,
 } = weatherSlice.actions;
 
-// Selectors
 // Paginate the days
 export const selectPaginatedDays = (state) =>
   paginator(
