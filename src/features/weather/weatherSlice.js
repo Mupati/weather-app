@@ -49,9 +49,11 @@ export const weatherSlice = createSlice({
       .addCase(getWeatherData.fulfilled, (state, action) => {
         // action.meta.arg contains the argument that was passed in the async request
         state.data[action.meta.arg] = groupByDtTxt(action.payload.list);
-
         state.selectedDay = Object.keys(groupByDtTxt(action.payload.list))[0];
+
+        // a bug over here. at times the data object is not set
         state.status = "idle";
+        console.log("data after idle", state.data[action.meta.arg]);
       })
       .addCase(getWeatherData.rejected, (state) => {
         // We can get the error message from action.error.message
@@ -84,6 +86,22 @@ export const selectWeatherData = (state) => {
     return state.weather.data.metric;
   }
   return state.weather.data.imperial;
+};
+
+// Navigation Actions and Selectors
+export const canMoveToPreviousCard = (state) => state.weather.currentPage > 0;
+
+export const canMoveToNextCard = (state) => {
+  const paginatedDays = selectPaginatedDays(state);
+  return paginatedDays.nextPage ? true : false;
+};
+
+export const moveToPreviousCard = (dispatch, getState) => {
+  if (canMoveToPreviousCard) dispatch(decreaseCurrentPage());
+};
+
+export const moveToNextCard = (dispatch, getState) => {
+  if (canMoveToNextCard) dispatch(increaseCurrentPage());
 };
 
 export default weatherSlice.reducer;

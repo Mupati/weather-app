@@ -3,9 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { Grid, IconButton, makeStyles } from "@material-ui/core";
 import { ArrowBack, ArrowForward } from "@material-ui/icons";
 import {
-  decreaseCurrentPage,
-  increaseCurrentPage,
-  selectPaginatedDays,
+  moveToPreviousCard,
+  moveToNextCard,
+  canMoveToPreviousCard,
+  canMoveToNextCard,
 } from "../features/weather/weatherSlice";
 
 const useStyles = makeStyles({
@@ -19,39 +20,30 @@ function CardNavigator() {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const currentPage = useSelector((state) => state.weather.currentPage);
-  const paginatedDays = useSelector(selectPaginatedDays);
-
-  let canMovePrevious = currentPage > 0;
-  let canMoveNext = paginatedDays.nextPage ? true : false;
-
-  const moveToPreviousCard = () => {
-    if (canMovePrevious) {
-      dispatch(decreaseCurrentPage());
-    }
-  };
-
-  const moveToNextCard = () => {
-    if (canMoveNext) {
-      dispatch(increaseCurrentPage());
-    }
-  };
+  const shouldShowPrevBtn = useSelector(canMoveToPreviousCard);
+  const shouldShowNextBtn = useSelector(canMoveToNextCard);
 
   return (
     <Grid container>
       <Grid item xs={6}>
-        {canMovePrevious && (
-          <IconButton aria-label="previous" onClick={moveToPreviousCard}>
-            <ArrowBack fontSize="large" />
-          </IconButton>
-        )}
+        <IconButton
+          aria-label="previous"
+          onClick={() => dispatch(moveToPreviousCard)}
+          data-testid="previous"
+          style={{ display: shouldShowPrevBtn ? "" : "none" }}
+        >
+          <ArrowBack fontSize="large" />
+        </IconButton>
       </Grid>
       <Grid item xs={6} className={classes.next}>
-        {canMoveNext && (
-          <IconButton aria-label="next" onClick={moveToNextCard}>
-            <ArrowForward fontSize="large" />
-          </IconButton>
-        )}
+        <IconButton
+          aria-label="next"
+          onClick={() => dispatch(moveToNextCard)}
+          data-testid="next"
+          style={{ display: shouldShowNextBtn ? "" : "none" }}
+        >
+          <ArrowForward fontSize="large" />
+        </IconButton>
       </Grid>
     </Grid>
   );
