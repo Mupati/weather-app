@@ -23,7 +23,7 @@ function WeatherChart() {
     ],
   };
 
-  return <Bar data={graphData} />;
+  return <Bar data={graphData} data-testid="weather-chart" />;
 }
 
 export default WeatherChart;

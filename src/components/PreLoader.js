@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Box, CircularProgress, makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
@@ -23,10 +23,10 @@ function PreLoader() {
       flexDirection="column"
     >
       {status === "loading" ? (
-        <>
+        <Fragment>
           <h1>Loading...</h1>
           <CircularProgress />
-        </>
+        </Fragment>
       ) : (
         <h1>An error occured while loading weather data. Try again later...</h1>
       )}

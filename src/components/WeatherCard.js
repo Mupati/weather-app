@@ -69,6 +69,7 @@ function WeatherCard() {
               className={selectedDay === day ? classes.rootHover : ""}
               variant={selectedDay === day ? "elevation" : "outlined"}
               onClick={() => dispatch(setSelectedDay(day))}
+              data-testid="weather-card"
             >
               <CardContent>
                 <Typography color="textSecondary" gutterBottom>

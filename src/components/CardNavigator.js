@@ -30,7 +30,7 @@ function CardNavigator() {
           aria-label="previous"
           onClick={() => dispatch(moveToPreviousCard)}
           data-testid="previous"
-          style={{ display: shouldShowPrevBtn ? "" : "none" }}
+          style={{ visibility: shouldShowPrevBtn ? "visible" : "hidden" }}
         >
           <ArrowBack fontSize="large" />
         </IconButton>
@@ -40,7 +40,7 @@ function CardNavigator() {
           aria-label="next"
           onClick={() => dispatch(moveToNextCard)}
           data-testid="next"
-          style={{ display: shouldShowNextBtn ? "" : "none" }}
+          style={{ visibility: shouldShowNextBtn ? "visible" : "hidden" }}
         >
           <ArrowForward fontSize="large" />
         </IconButton>

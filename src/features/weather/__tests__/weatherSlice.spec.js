@@ -5,15 +5,9 @@ import weatherReducer, {
   setSelectedDay,
   setPageSize,
 } from "../weatherSlice";
-import { groupedData } from "../../../utils/testData";
 
 describe("Tests weather slice", () => {
   const initialState = {
-    data: {
-      metric: groupedData,
-      imperial: groupedData,
-    },
-    status: "loading",
     temperatureUnit: "F",
     currentPage: 0,
     pageSize: 3,
