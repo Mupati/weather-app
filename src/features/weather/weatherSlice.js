@@ -117,25 +117,4 @@ export const moveToNextCard = (dispatch, getState) => {
   if (canMoveToNextCard) dispatch(increaseCurrentPage());
 };
 
-// export const selectPaginatedDays = (state) =>
-//   paginator(
-//     Object.keys(state.weather.data.imperial),
-//     state.weather.currentPage,
-//     state.weather.pageSize
-//   );
-
-// export const selectWeatherData = (state) => {
-//   if (state.weather.temperatureUnit === "C") {
-//     return state.weather.data.metric;
-//   }
-//   return state.weather.data.imperial;
-// };
-
-// export const canMoveToPreviousCard = (state) => state.weather.currentPage > 0;
-
-// export const canMoveToNextCard = (state) => {
-//   const paginatedDays = selectPaginatedDays(state);
-//   return paginatedDays.nextPage ? true : false;
-// };
-
 export default weatherSlice.reducer;

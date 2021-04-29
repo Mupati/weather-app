@@ -40,7 +40,6 @@
     ]
   },
   "devDependencies": {
-    "canvas": "^2.7.0",
     "redux-mock-store": "^1.5.4"
   }
 }

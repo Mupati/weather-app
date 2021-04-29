@@ -1,7 +1,7 @@
 import React from "react";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 import weatherReducer from "../../features/weather/weatherSlice";
 import CheckboxGroup from "../CheckboxGroup";
@@ -19,10 +19,6 @@ describe("<CheckboxGroup />", () => {
         <CheckboxGroup />
       </Provider>
     );
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   test("Fahrenheit is already checked", () => {

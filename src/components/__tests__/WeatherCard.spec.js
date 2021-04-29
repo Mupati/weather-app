@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import WeatherCard from "../WeatherCard";
@@ -29,10 +29,6 @@ describe("<WeatherCard/>", () => {
         <WeatherCard />
       </Provider>
     );
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   test("Weather Card dispatches action when clicked", () => {

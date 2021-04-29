@@ -1,11 +1,9 @@
 import React from "react";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 
-import weatherReducer, {
-  moveToNextCard,
-} from "../../features/weather/weatherSlice";
+import weatherReducer from "../../features/weather/weatherSlice";
 import CardNavigator from "../CardNavigator";
 
 describe("<CardNavigator />", () => {
@@ -21,10 +19,6 @@ describe("<CardNavigator />", () => {
         <CardNavigator />
       </Provider>
     );
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   test("Left Navigation Button is hidden", () => {

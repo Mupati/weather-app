@@ -49,12 +49,12 @@ function WeatherCard() {
   const isMedium = useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
-    const setNumberVisibleCards = () => {
+    const setVisibleCardsNumber = () => {
       if (isMedium) dispatch(setPageSize(3));
       else if (isSmall) dispatch(setPageSize(2));
       else if (isExtraSmall) dispatch(setPageSize(1));
     };
-    setNumberVisibleCards();
+    setVisibleCardsNumber();
   }, [isExtraSmall, isSmall, isMedium, dispatch]);
 
   return (

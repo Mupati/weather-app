@@ -26,12 +26,12 @@ describe("Tests weather slice", () => {
   });
 
   test("should handle increaseCurrentPage", () => {
-    let newState = weatherReducer(initialState, increaseCurrentPage());
+    const newState = weatherReducer(initialState, increaseCurrentPage());
     expect(newState.currentPage).toEqual(1);
   });
 
   test("should handle decreaseCurrentPage", () => {
-    let newState = weatherReducer(
+    const newState = weatherReducer(
       { ...initialState, currentPage: 3 },
       decreaseCurrentPage()
     );
@@ -39,12 +39,12 @@ describe("Tests weather slice", () => {
   });
 
   test("should handle setSelectedDay", () => {
-    let newState = weatherReducer(initialState, setSelectedDay("2020-08-04"));
+    const newState = weatherReducer(initialState, setSelectedDay("2020-08-04"));
     expect(newState.selectedDay).toEqual("2020-08-04");
   });
 
   test("should handle setPageSize", () => {
-    let newState = weatherReducer(initialState, setPageSize(3));
+    const newState = weatherReducer(initialState, setPageSize(3));
     expect(newState.pageSize).toEqual(3);
   });
 });

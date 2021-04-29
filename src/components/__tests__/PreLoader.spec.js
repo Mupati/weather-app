@@ -1,7 +1,7 @@
 import React from "react";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import weatherReducer, { setStatus } from "../../features/weather/weatherSlice";
 import PreLoader from "../PreLoader";
@@ -19,10 +19,6 @@ describe("<PreLoader />", () => {
         <PreLoader />
       </Provider>
     );
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   test("Show loading state when fetching data", () => {
