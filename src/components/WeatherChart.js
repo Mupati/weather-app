@@ -9,9 +9,9 @@ function WeatherChart() {
   const dayWeatherData = useSelector(selectWeatherData);
 
   const graphData = {
-    labels: dayWeatherData[selectedDay].map((data) =>
-      formatWeatherTime(data.dt_txt)
-    ),
+    labels:
+      Object.keys(dayWeatherData).length !== 0 &&
+      dayWeatherData[selectedDay].map((data) => formatWeatherTime(data.dt_txt)),
     datasets: [
       {
         label: `Temperatures on ${formatWeatherDay(selectedDay)}`,
